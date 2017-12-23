@@ -1,0 +1,2283 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111002924-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-111002924-1');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="./js/jquery.bgswitcher.js"></script>
+  <title>JJWD - JSONized Japanese Weather Data</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="JJWD - JSONized Japanese Weather Data">
+  <meta name="twitter:description" content="JSON形式で使いやすい気象データを配信するプロジェクト">
+</head>
+<script>
+  $(function () {
+    $('.logo-mark , .logo-type').hide().fadeIn(700);
+    $(".key-visual-mini").bgswitcher({
+      images: ["./img/bg-clearsky.jpg", "./img/bg-cloudy.jpg", "./img/bg-rain.jpg", "./img/bg-sunset.jpg"]
+    });
+  });
+</script>
+
+<body>
+  <section class="key-visual-mini">
+
+    <a href="http://jjwd.info/"><div class="logo-mark"></div></a>
+    <h2>Documents</h2>
+  </section>
+
+  <section class="explain">
+    <div class="title">
+      <h2>JJWD で配信しているJSONデータ</h2>
+    </div>
+    <div class="detail">
+      2017/12/11時点では 全国約1300箇所に存在する AMeDAS 観測点による
+      <a href="http://www.data.jma.go.jp/obd/stats/data/mdrr/docs/csv_dl_readme.html" target="_blank">最新の気象データ</a> をそのまま JSON 化したもののみを配信しております。
+      <ul>
+        <li>1時間降水量 (
+          <a href="http://jjwd.info/data/amedas-rain-1h-recent.json">http://jjwd.info/data/amedas-rain-1h-recent.json </a> )</li>
+        <li>3時間降水量 (
+          <a href="http://jjwd.info/data/amedas-rain-3h-recent.json">http://jjwd.info/data/amedas-rain-3h-recent.json </a> )</li>
+        <li>24時間降水量 (
+          <a href="http://jjwd.info/data/amedas-rain-24h-recent.json">http://jjwd.info/data/amedas-rain-24h-recent.json </a> )</li>
+        <li>48時間降水量 (
+          <a href="http://jjwd.info/data/amedas-rain-48h-recent.json">http://jjwd.info/data/amedas-rain-48h-recent.json </a> )</li>
+        <li>72時間降水量 (
+          <a href="http://jjwd.info/data/amedas-rain-72h-recent.json">http://jjwd.info/data/amedas-rain-72h-recent.json </a> )</li>
+        <li>降水量全要素 (
+          <a href="http://jjwd.info/data/amedas-rain-all-recent.json">http://jjwd.info/data/amedas-rain-all-recent.json </a> )</li>
+        <li>最大風速 (
+          <a href="http://jjwd.info/data/amedas-max-wind-speed-recent.json">http://jjwd.info/data/amedas-max-wind-speed-recent.json </a> )</li>
+        <li>最大瞬間風速 (
+          <a href="http://jjwd.info/data/amedas-max-instantaneous-wind-speed-recent.json">http://jjwd.info/data/amedas-max-instantaneous-wind-speed-recent.json </a> )</li>
+        <li>最高気温 (
+          <a href="http://jjwd.info/data/amedas-max-temperature-recent.json">http://jjwd.info/data/amedas-max-temperature-recent.json </a>)</li>
+        <li>最低気温 (
+          <a href="http://jjwd.info/data/amedas-min-temperature-recent.json">http://jjwd.info/data/amedas-min-temperature-recent.json </a>)</li>
+        <li>積雪 (
+          <a href="http://jjwd.info/data/amedas-snow-depth-recent.json">http://jjwd.info/data/amedas-snow-depth-recent.json </a>)</li>
+        <li>24時間降雪量 (
+          <a href="http://jjwd.info/data/amedas-falling-snow-24h-recent.json">http://jjwd.info/data/amedas-falling-snow-24h-recent.json </a>)</li>
+        <li>累積降雪量 (
+          <a href="http://jjwd.info/data/amedas-falling-snow-total-recent.json">http://jjwd.info/data/amedas-falling-snow-total-recent.json </a>)</li>
+      </ul>
+      また、各 JSON ファイルの末尾に .gz を付加すると、 gzip 圧縮された JSONデータが取得できます。
+    </div>
+  </section>
+
+  <section class="explain">
+    <div class="title">
+      <h2>1時間降水量</h2>
+      amedas-rain-1h-recent.json
+    </div>
+    <div class="detail">
+      10分ごとに更新（更新時刻の30分前のデータが表示される）
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left">気象庁CSVにおける項目名</th>
+            <th style="text-align:left">JJWDのJSONにおけるプロパティ名</th>
+            <th style="text-align:left">概要</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align:left">観測所番号</td>
+            <td style="text-align:left">stn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">都道府県</td>
+            <td style="text-align:left">pref</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">国際地点番号</td>
+            <td style="text-align:left">intlStn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">地点</td>
+            <td style="text-align:left">point</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(年)</td>
+            <td style="text-align:left">year</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(月)</td>
+            <td style="text-align:left">month</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(日)</td>
+            <td style="text-align:left">day</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(時)</td>
+            <td style="text-align:left">hour</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(分)</td>
+            <td style="text-align:left">min</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在値(mm)</td>
+            <td style="text-align:left">rain1h</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在値の品質情報</td>
+            <td style="text-align:left">rain1hQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値(mm)</td>
+            <td style="text-align:left">rain1hTM</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値の品質情報</td>
+            <td style="text-align:left">rain1hTMQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値起時（時）(まで)</td>
+            <td style="text-align:left">rain1hTMhour</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値起時（分）(まで)</td>
+            <td style="text-align:left">rain1hTMmin</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値起時(まで)の品質情報</td>
+            <td style="text-align:left">rain1hTMtimeQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">10年未満での極値更新</td>
+            <td style="text-align:left">rain1hExtU10</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">極値更新</td>
+            <td style="text-align:left">rain1hExt</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値(mm)</td>
+            <td style="text-align:left">rain1hR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の品質情報</td>
+            <td style="text-align:left">rain1hRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の年</td>
+            <td style="text-align:left">rain1hRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の月</td>
+            <td style="text-align:left">rain1hRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の日</td>
+            <td style="text-align:left">rain1hRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値(mm)</td>
+            <td style="text-align:left">rain1hMR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の品質情報</td>
+            <td style="text-align:left">rain1hMRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の年</td>
+            <td style="text-align:left">rain1hMRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の月</td>
+            <td style="text-align:left">rain1hMRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の日</td>
+            <td style="text-align:left">rain1hMRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">統計開始年</td>
+            <td style="text-align:left">startYear</td>
+            <td style="text-align:left"></td>
+          </tr>
+        </tbody>
+      </table>
+
+
+
+    </div>
+  </section>
+
+  <section class="explain">
+    <div class="title">
+      <h2>3時間降水量</h2>
+      amedas-rain-3h-recent.json
+    </div>
+    <div class="detail">
+      10分ごとに更新（更新時刻の30分前のデータが表示される）
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left">気象庁CSVにおける項目名</th>
+            <th style="text-align:left">JJWDのJSONにおけるプロパティ名</th>
+            <th style="text-align:left">概要</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align:left">観測所番号</td>
+            <td style="text-align:left">stn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">都道府県</td>
+            <td style="text-align:left">pref</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">国際地点番号</td>
+            <td style="text-align:left">intlStn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">地点</td>
+            <td style="text-align:left">point</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(年)</td>
+            <td style="text-align:left">year</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(月)</td>
+            <td style="text-align:left">month</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(日)</td>
+            <td style="text-align:left">day</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(時)</td>
+            <td style="text-align:left">hour</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(分)</td>
+            <td style="text-align:left">min</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在値(mm)</td>
+            <td style="text-align:left">rain3h</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在値の品質情報</td>
+            <td style="text-align:left">rain3hQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値(mm)</td>
+            <td style="text-align:left">rain3hTM</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値の品質情報</td>
+            <td style="text-align:left">rain3hTMQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値起時（時）(まで)</td>
+            <td style="text-align:left">rain3hTMhour</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値起時（分）(まで)</td>
+            <td style="text-align:left">rain3hTMmin</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値起時(まで)の品質情報</td>
+            <td style="text-align:left">rain3hTMtimeQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">10年未満での極値更新</td>
+            <td style="text-align:left">rain3hExtU10</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">極値更新</td>
+            <td style="text-align:left">rain3hExt</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値(mm)</td>
+            <td style="text-align:left">rain3hR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の品質情報</td>
+            <td style="text-align:left">rain3hRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の年</td>
+            <td style="text-align:left">rain3hRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の月</td>
+            <td style="text-align:left">rain3hRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の日</td>
+            <td style="text-align:left">rain3hRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値(mm)</td>
+            <td style="text-align:left">rain3hMR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の品質情報</td>
+            <td style="text-align:left">rain3hMRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の年</td>
+            <td style="text-align:left">rain3hMRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の月</td>
+            <td style="text-align:left">rain3hMRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の日</td>
+            <td style="text-align:left">rain3hMRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">統計開始年</td>
+            <td style="text-align:left">startYear</td>
+            <td style="text-align:left"></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </section>
+
+  <section class="explain">
+    <div class="title">
+      <h2>24時間降水量</h2>
+      amedas-rain-24h-recent.json
+    </div>
+    <div class="detail">
+      10分ごとに更新（更新時刻の30分前のデータが表示される）
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left">気象庁CSVにおける項目名</th>
+            <th style="text-align:left">JJWDのJSONにおけるプロパティ名</th>
+            <th style="text-align:left">概要</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align:left">観測所番号</td>
+            <td style="text-align:left">stn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">都道府県</td>
+            <td style="text-align:left">pref</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">国際地点番号</td>
+            <td style="text-align:left">intlStn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">地点</td>
+            <td style="text-align:left">point</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(年)</td>
+            <td style="text-align:left">year</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(月)</td>
+            <td style="text-align:left">month</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(日)</td>
+            <td style="text-align:left">day</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(時)</td>
+            <td style="text-align:left">hour</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(分)</td>
+            <td style="text-align:left">min</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在値(mm)</td>
+            <td style="text-align:left">rain24h</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在値の品質情報</td>
+            <td style="text-align:left">rain24hQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値(mm)</td>
+            <td style="text-align:left">rain24hTM</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値の品質情報</td>
+            <td style="text-align:left">rain24hTMQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値起時（時）(まで)</td>
+            <td style="text-align:left">rain24hTMhour</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値起時（分）(まで)</td>
+            <td style="text-align:left">rain24hTMmin</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値起時(まで)の品質情報</td>
+            <td style="text-align:left">rain24hTMtimeQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">10年未満での極値更新</td>
+            <td style="text-align:left">rain24hExtU10</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">極値更新</td>
+            <td style="text-align:left">rain24hExt</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値(mm)</td>
+            <td style="text-align:left">rain24hR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の品質情報</td>
+            <td style="text-align:left">rain24hRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の年</td>
+            <td style="text-align:left">rain24hRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の月</td>
+            <td style="text-align:left">rain24hRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の日</td>
+            <td style="text-align:left">rain24hRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値(mm)</td>
+            <td style="text-align:left">rain24hMR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の品質情報</td>
+            <td style="text-align:left">rain24hMRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の年</td>
+            <td style="text-align:left">rain24hMRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の月</td>
+            <td style="text-align:left">rain24hMRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の日</td>
+            <td style="text-align:left">rain24hMRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">統計開始年</td>
+            <td style="text-align:left">startYear</td>
+            <td style="text-align:left"></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </section>
+
+  <section class="explain">
+    <div class="title">
+      <h2>48時間降水量</h2>
+      amedas-rain-48h-recent.json
+    </div>
+    <div class="detail">
+      10分ごとに更新（更新時刻の30分前のデータが表示される）
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left">気象庁CSVにおける項目名</th>
+            <th style="text-align:left">JJWDのJSONにおけるプロパティ名</th>
+            <th style="text-align:left">概要</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align:left">観測所番号</td>
+            <td style="text-align:left">stn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">都道府県</td>
+            <td style="text-align:left">pref</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">国際地点番号</td>
+            <td style="text-align:left">intlStn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">地点</td>
+            <td style="text-align:left">point</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(年)</td>
+            <td style="text-align:left">year</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(月)</td>
+            <td style="text-align:left">month</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(日)</td>
+            <td style="text-align:left">day</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(時)</td>
+            <td style="text-align:left">hour</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(分)</td>
+            <td style="text-align:left">min</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在値(mm)</td>
+            <td style="text-align:left">rain48h</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在値の品質情報</td>
+            <td style="text-align:left">rain48hQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値(mm)</td>
+            <td style="text-align:left">rain48hTM</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値の品質情報</td>
+            <td style="text-align:left">rain48hTMQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値起時（時）(まで)</td>
+            <td style="text-align:left">rain48hTMhour</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値起時（分）(まで)</td>
+            <td style="text-align:left">rain48hTMmin</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値起時(まで)の品質情報</td>
+            <td style="text-align:left">rain48hTMtimeQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">10年未満での極値更新</td>
+            <td style="text-align:left">rain48hExtU10</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">極値更新</td>
+            <td style="text-align:left">rain48hExt</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値(mm)</td>
+            <td style="text-align:left">rain48hR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の品質情報</td>
+            <td style="text-align:left">rain48hRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の年</td>
+            <td style="text-align:left">rain48hRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の月</td>
+            <td style="text-align:left">rain48hRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の日</td>
+            <td style="text-align:left">rain48hRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値(mm)</td>
+            <td style="text-align:left">rain48hMR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の品質情報</td>
+            <td style="text-align:left">rain48hMRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の年</td>
+            <td style="text-align:left">rain48hMRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の月</td>
+            <td style="text-align:left">rain48hMRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の日</td>
+            <td style="text-align:left">rain48hMRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">統計開始年</td>
+            <td style="text-align:left">startYear</td>
+            <td style="text-align:left"></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </section>
+
+  <section class="explain">
+    <div class="title">
+      <h2>72時間降水量</h2>
+      amedas-rain-72h-recent.json
+    </div>
+    <div class="detail">
+      10分ごとに更新（更新時刻の30分前のデータが表示される）
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left">気象庁CSVにおける項目名</th>
+            <th style="text-align:left">JJWDのJSONにおけるプロパティ名</th>
+            <th style="text-align:left">概要</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align:left">観測所番号</td>
+            <td style="text-align:left">stn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">都道府県</td>
+            <td style="text-align:left">pref</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">国際地点番号</td>
+            <td style="text-align:left">intlStn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">地点</td>
+            <td style="text-align:left">point</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(年)</td>
+            <td style="text-align:left">year</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(月)</td>
+            <td style="text-align:left">month</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(日)</td>
+            <td style="text-align:left">day</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(時)</td>
+            <td style="text-align:left">hour</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(分)</td>
+            <td style="text-align:left">min</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在値(mm)</td>
+            <td style="text-align:left">rain72h</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在値の品質情報</td>
+            <td style="text-align:left">rain72hQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値(mm)</td>
+            <td style="text-align:left">rain72hTM</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値の品質情報</td>
+            <td style="text-align:left">rain72hTMQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値起時（時）(まで)</td>
+            <td style="text-align:left">rain72hTMhour</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値起時（分）(まで)</td>
+            <td style="text-align:left">rain72hTMmin</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値起時(まで)の品質情報</td>
+            <td style="text-align:left">rain72hTMtimeQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">10年未満での極値更新</td>
+            <td style="text-align:left">rain72hExtU10</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">極値更新</td>
+            <td style="text-align:left">rain72hExt</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値(mm)</td>
+            <td style="text-align:left">rain72hR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の品質情報</td>
+            <td style="text-align:left">rain72hRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の年</td>
+            <td style="text-align:left">rain72hRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の月</td>
+            <td style="text-align:left">rain72hRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の日</td>
+            <td style="text-align:left">rain72hRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値(mm)</td>
+            <td style="text-align:left">rain72hMR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の品質情報</td>
+            <td style="text-align:left">rain72hMRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の年</td>
+            <td style="text-align:left">rain72hMRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の月</td>
+            <td style="text-align:left">rain72hMRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の日</td>
+            <td style="text-align:left">rain72hMRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">統計開始年</td>
+            <td style="text-align:left">startYear</td>
+            <td style="text-align:left"></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </section>
+
+  <section class="explain">
+    <div class="title">
+      <h2>降水量全要素</h2>
+      amedas-rain-all-recent.json
+    </div>
+    <div class="detail">
+      10分ごとに更新（更新時刻の30分前のデータが表示される）
+      <table>
+          <thead>
+          <tr>
+          <th style="text-align:left">気象庁CSVにおける項目名</th>
+          <th style="text-align:left">JJWDのJSONにおけるプロパティ名</th>
+          <th style="text-align:left">概要</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+          <td style="text-align:left">観測所番号</td>
+          <td style="text-align:left">stn</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">都道府県</td>
+          <td style="text-align:left">pref</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">国際地点番号</td>
+          <td style="text-align:left">intlStn</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">地点</td>
+          <td style="text-align:left">point</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">現在時刻(年)</td>
+          <td style="text-align:left">year</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">現在時刻(月)</td>
+          <td style="text-align:left">month</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">現在時刻(日)</td>
+          <td style="text-align:left">day</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">現在時刻(時)</td>
+          <td style="text-align:left">hour</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">現在時刻(分)</td>
+          <td style="text-align:left">min</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">1時間降水量極値更新</td>
+          <td style="text-align:left">rain1hExt</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">1時間降水量極値更新（10年未満）</td>
+          <td style="text-align:left">rain1hExtU10</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">3時間降水量極値更新</td>
+          <td style="text-align:left">rain3hExt</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">3時間降水量極値更新（10年未満）</td>
+          <td style="text-align:left">rain3hExtU10</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">24時間降水量極値更新</td>
+          <td style="text-align:left">rain24hExt</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">24時間降水量極値更新（10年未満）</td>
+          <td style="text-align:left">rain24hExtU10</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">48時間降水量極値更新</td>
+          <td style="text-align:left">rain48hExt</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">48時間降水量極値更新（10年未満）</td>
+          <td style="text-align:left">rain48hExtU10</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">72時間降水量極値更新</td>
+          <td style="text-align:left">rain72hExt</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">72時間降水量極値更新（10年未満）</td>
+          <td style="text-align:left">rain72hExtU10</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">1時間降水量 現在値(mm)</td>
+          <td style="text-align:left">rain1h</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">1時間降水量 現在値の品質情報</td>
+          <td style="text-align:left">rain1hQ</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">1時間降水量 今日の最大値(mm)</td>
+          <td style="text-align:left">rain1hTM</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">1時間降水量 今日の最大値の品質情報</td>
+          <td style="text-align:left">rain1hTMQ</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">3時間降水量 現在値(mm)</td>
+          <td style="text-align:left">rain3h</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">3時間降水量 現在値の品質情報</td>
+          <td style="text-align:left">rain3hQ</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">3時間降水量 今日の最大値(mm)</td>
+          <td style="text-align:left">rain3hTM</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">3時間降水量 今日の最大値の品質情報</td>
+          <td style="text-align:left">rain3hTMQ</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">24時間降水量 現在値(mm)</td>
+          <td style="text-align:left">rain24h</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">24時間降水量 現在値の品質情報</td>
+          <td style="text-align:left">rain24hQ</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">24時間降水量 今日の最大値(mm)</td>
+          <td style="text-align:left">rain24hTM</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">24時間降水量 今日の最大値の品質情報</td>
+          <td style="text-align:left">rain24hTMQ</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">48時間降水量 現在値(mm)</td>
+          <td style="text-align:left">rain48h</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">48時間降水量 現在値の品質情報</td>
+          <td style="text-align:left">rain48hQ</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">48時間降水量 今日の最大値(mm)</td>
+          <td style="text-align:left">rain48hTM</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">48時間降水量 今日の最大値の品質情報</td>
+          <td style="text-align:left">rain48hTMQ</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">72時間降水量 現在値(mm)</td>
+          <td style="text-align:left">rain72h</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">72時間降水量 現在値の品質情報</td>
+          <td style="text-align:left">rain72hQ</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">72時間降水量 今日の最大値(mm)</td>
+          <td style="text-align:left">rain72hTM</td>
+          <td style="text-align:left"></td>
+          </tr>
+          <tr>
+          <td style="text-align:left">72時間降水量 今日の最大値の品質情報</td>
+          <td style="text-align:left">rain72hTMQ</td>
+          <td style="text-align:left"></td>
+          </tr>
+          </tbody>
+          </table>
+          
+
+    </div>
+  </section>
+
+  <section class="explain">
+    <div class="title">
+      <h2>最大風速</h2>
+      amedas-max-wind-speed-recent.json
+    </div>
+    <div class="detail">
+      1時間ごとに更新（毎時00分の観測データを50分過ぎに更新）
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left">気象庁CSVにおける項目名</th>
+            <th style="text-align:left">JJWDのJSONにおけるプロパティ名</th>
+            <th style="text-align:left">概要</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align:left">観測所番号</td>
+            <td style="text-align:left">stn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">都道府県</td>
+            <td style="text-align:left">pref</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">国際地点番号</td>
+            <td style="text-align:left">intlStn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">地点</td>
+            <td style="text-align:left">point</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(年)</td>
+            <td style="text-align:left">year</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(月)</td>
+            <td style="text-align:left">month</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(日)</td>
+            <td style="text-align:left">day</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(時)</td>
+            <td style="text-align:left">hour</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(分)</td>
+            <td style="text-align:left">min</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在値の品質情報</td>
+            <td style="text-align:left">maxWindQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値(m/s)</td>
+            <td style="text-align:left">maxWindTM</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値の品質情報</td>
+            <td style="text-align:left">maxWindTMQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値観測時の風向</td>
+            <td style="text-align:left">maxWindTMD</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値観測時の風向の品質情報</td>
+            <td style="text-align:left">maxWindTMDQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値起時（時）</td>
+            <td style="text-align:left">maxWindTMhour</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値起時（分）</td>
+            <td style="text-align:left">maxWindTMmin</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値起時の品質情報</td>
+            <td style="text-align:left">maxWindTMtimeQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">極値更新</td>
+            <td style="text-align:left">maxWindExt</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">10年未満での極値更新</td>
+            <td style="text-align:left">maxWindExtU10</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値(m/s)</td>
+            <td style="text-align:left">maxWindR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の品質情報</td>
+            <td style="text-align:left">maxWindRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値観測時の風向</td>
+            <td style="text-align:left">maxWindRD</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値観測時の風向の品質情報</td>
+            <td style="text-align:left">maxWindRDQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値観測時の年</td>
+            <td style="text-align:left">maxWindRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値観測時の月</td>
+            <td style="text-align:left">maxWindRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値観測時の日</td>
+            <td style="text-align:left">maxWindRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値（m/s）</td>
+            <td style="text-align:left">maxWindMR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の品質情報</td>
+            <td style="text-align:left">maxWindMRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値観測時の風向</td>
+            <td style="text-align:left">maxWindMRD</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値観測時の風向の品質情報</td>
+            <td style="text-align:left">maxWindMRDQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値観測時の年</td>
+            <td style="text-align:left">maxWindMRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値観測時の月</td>
+            <td style="text-align:left">maxWindMRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値観測時の日</td>
+            <td style="text-align:left">maxWindMRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">統計開始年</td>
+            <td style="text-align:left">startYear</td>
+            <td style="text-align:left"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="explain">
+    <div class="title">
+      <h2>最大瞬間風速</h2>
+      amedas-max-instantaneous-wind-speed-recent.json
+    </div>
+    <div class="detail">
+      1時間ごとに更新（毎時00分の観測データを50分過ぎに更新）
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left">気象庁CSVにおける項目名</th>
+            <th style="text-align:left">JJWDのJSONにおけるプロパティ名</th>
+            <th style="text-align:left">概要</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align:left">観測所番号</td>
+            <td style="text-align:left">stn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">都道府県</td>
+            <td style="text-align:left">pref</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">国際地点番号</td>
+            <td style="text-align:left">intlStn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">地点</td>
+            <td style="text-align:left">point</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(年)</td>
+            <td style="text-align:left">year</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(月)</td>
+            <td style="text-align:left">month</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(日)</td>
+            <td style="text-align:left">day</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(時)</td>
+            <td style="text-align:left">hour</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(分)</td>
+            <td style="text-align:left">min</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在値の品質情報</td>
+            <td style="text-align:left">maxIntWindQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値(m/s)</td>
+            <td style="text-align:left">maxIntWindTM</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値の品質情報</td>
+            <td style="text-align:left">maxIntWindTMQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値観測時の風向</td>
+            <td style="text-align:left">maxIntWindTMD</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値観測時の風向の品質情報</td>
+            <td style="text-align:left">maxIntWindTMDQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値起時（時）</td>
+            <td style="text-align:left">maxIntWindTMhour</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値起時（分）</td>
+            <td style="text-align:left">maxIntWindTMmin</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最大値起時の品質情報</td>
+            <td style="text-align:left">maxIntWindTMtimeQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">極値更新</td>
+            <td style="text-align:left">maxIntWindExt</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">10年未満での極値更新</td>
+            <td style="text-align:left">maxIntWindExtU10</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値(m/s)</td>
+            <td style="text-align:left">maxIntWindR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の品質情報</td>
+            <td style="text-align:left">maxIntWindRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値観測時の風向</td>
+            <td style="text-align:left">maxIntWindRD</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値観測時の風向の品質情報</td>
+            <td style="text-align:left">maxIntWindRDQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値観測時の年</td>
+            <td style="text-align:left">maxIntWindRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値観測時の月</td>
+            <td style="text-align:left">maxIntWindRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値観測時の日</td>
+            <td style="text-align:left">maxIntWindRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値（m/s）</td>
+            <td style="text-align:left">maxIntWindMR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の品質情報</td>
+            <td style="text-align:left">maxIntWindMRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値観測時の風向</td>
+            <td style="text-align:left">maxIntWindMRD</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値観測時の風向の品質情報</td>
+            <td style="text-align:left">maxIntWindMRDQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値観測時の年</td>
+            <td style="text-align:left">maxIntWindMRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値観測時の月</td>
+            <td style="text-align:left">maxIntWindMRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値観測時の日</td>
+            <td style="text-align:left">maxIntWindMRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">統計開始年</td>
+            <td style="text-align:left">startYear</td>
+            <td style="text-align:left"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="explain">
+    <div class="title">
+      <h2>最高気温</h2>
+      amedas-max-temperature-recent.json
+    </div>
+    <div class="detail">
+      1時間ごとに更新（毎時00分の観測データを50分過ぎに更新）
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left">気象庁CSVにおける項目名</th>
+            <th style="text-align:left">JJWDのJSONにおけるプロパティ名</th>
+            <th style="text-align:left">概要</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align:left">観測所番号</td>
+            <td style="text-align:left">stn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">都道府県</td>
+            <td style="text-align:left">pref</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">国際地点番号</td>
+            <td style="text-align:left">intlStn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">地点</td>
+            <td style="text-align:left">point</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(年)</td>
+            <td style="text-align:left">year</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(月)</td>
+            <td style="text-align:left">month</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(日)</td>
+            <td style="text-align:left">day</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(時)</td>
+            <td style="text-align:left">hour</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(分)</td>
+            <td style="text-align:left">min</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最高気温(℃)</td>
+            <td style="text-align:left">maxTemp</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最高気温の品質情報</td>
+            <td style="text-align:left">maxTempQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最高気温起時（時）</td>
+            <td style="text-align:left">maxTemphour</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最高気温起時（分）</td>
+            <td style="text-align:left">maxTempmin</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最高気温起時の品質情報</td>
+            <td style="text-align:left">maxTemptimeQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">平年差（℃）</td>
+            <td style="text-align:left">maxTempDevAvg</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">前日差（℃）</td>
+            <td style="text-align:left">maxTempDevYest</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">該当旬（月）</td>
+            <td style="text-align:left">maxTempSmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">該当旬（旬）</td>
+            <td style="text-align:left">maxTempSseason</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">極値更新</td>
+            <td style="text-align:left">maxTempExt</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">10年未満での極値更新</td>
+            <td style="text-align:left">maxTempExtU10</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今年最高</td>
+            <td style="text-align:left">maxTempIsYR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今年の最高気温（℃)（昨日まで）</td>
+            <td style="text-align:left">maxTempYR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今年の最高気温（昨日まで）の品質情報</td>
+            <td style="text-align:left">maxTempYRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今年の最高気温（昨日まで）を観測した起日（年）</td>
+            <td style="text-align:left">maxTempYRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今年の最高気温（昨日まで）を観測した起日（月）</td>
+            <td style="text-align:left">maxTempYRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今年の最高気温（昨日まで）を観測した起日（日）</td>
+            <td style="text-align:left">maxTempYRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値（℃）</td>
+            <td style="text-align:left">maxTempR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の品質情報</td>
+            <td style="text-align:left">maxTempRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値を観測した起日（年）</td>
+            <td style="text-align:left">maxTempRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値を観測した起日（月）</td>
+            <td style="text-align:left">maxTempRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値を観測した起日（日）</td>
+            <td style="text-align:left">maxTempRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値</td>
+            <td style="text-align:left">maxTempMR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の品質情報</td>
+            <td style="text-align:left">maxTempMRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の起日（年）</td>
+            <td style="text-align:left">maxTempMRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の起日（月）</td>
+            <td style="text-align:left">maxTempMRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の起日（日）</td>
+            <td style="text-align:left">maxTempMRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">統計開始年</td>
+            <td style="text-align:left">startYear</td>
+            <td style="text-align:left"></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </section>
+
+  <section class="explain">
+    <div class="title">
+      <h2>最低気温</h2>
+      amedas-min-temperature-recent.json
+    </div>
+    <div class="detail">
+      1時間ごとに更新（毎時00分の観測データを50分過ぎに更新）
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left">気象庁CSVにおける項目名</th>
+            <th style="text-align:left">JJWDのJSONにおけるプロパティ名</th>
+            <th style="text-align:left">概要</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align:left">観測所番号</td>
+            <td style="text-align:left">stn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">都道府県</td>
+            <td style="text-align:left">pref</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">国際地点番号</td>
+            <td style="text-align:left">intlStn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">地点</td>
+            <td style="text-align:left">point</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(年)</td>
+            <td style="text-align:left">year</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(月)</td>
+            <td style="text-align:left">month</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(日)</td>
+            <td style="text-align:left">day</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(時)</td>
+            <td style="text-align:left">hour</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(分)</td>
+            <td style="text-align:left">min</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最低気温(℃)</td>
+            <td style="text-align:left">minTemp</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最低気温の品質情報</td>
+            <td style="text-align:left">minTempQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最低気温起時（時）</td>
+            <td style="text-align:left">minTemphour</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最低気温起時（分）</td>
+            <td style="text-align:left">minTempmin</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今日の最低気温起時の品質情報</td>
+            <td style="text-align:left">minTemptimeQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">平年差（℃）</td>
+            <td style="text-align:left">minTempDevAvg</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">前日差（℃）</td>
+            <td style="text-align:left">minTempDevYest</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">該当旬（月）</td>
+            <td style="text-align:left">minTempSmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">該当旬（旬）</td>
+            <td style="text-align:left">minTempSseason</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">極値更新</td>
+            <td style="text-align:left">minTempExt</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">10年未満での極値更新</td>
+            <td style="text-align:left">minTempExtU10</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今季最低</td>
+            <td style="text-align:left">minTempIsSR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今年の最低気温（℃)（昨日まで）</td>
+            <td style="text-align:left">minTempYR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今年の最低気温（昨日まで）の品質情報</td>
+            <td style="text-align:left">minTempYRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今年の最低気温（昨日まで）を観測した起日（年）</td>
+            <td style="text-align:left">minTempYRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今年の最低気温（昨日まで）を観測した起日（月）</td>
+            <td style="text-align:left">minTempYRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">今年の最低気温（昨日まで）を観測した起日（日）</td>
+            <td style="text-align:left">minTempYRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値（℃）</td>
+            <td style="text-align:left">minTempR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値の品質情報</td>
+            <td style="text-align:left">minTempRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値を観測した起日（年）</td>
+            <td style="text-align:left">minTempRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値を観測した起日（月）</td>
+            <td style="text-align:left">minTempRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までの観測史上1位の値を観測した起日（日）</td>
+            <td style="text-align:left">minTempRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値</td>
+            <td style="text-align:left">minTempMR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の品質情報</td>
+            <td style="text-align:left">minTempMRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の起日（年）</td>
+            <td style="text-align:left">minTempMRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の起日（月）</td>
+            <td style="text-align:left">minTempMRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の起日（日）</td>
+            <td style="text-align:left">minTempMRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">統計開始年</td>
+            <td style="text-align:left">startYear</td>
+            <td style="text-align:left"></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </section>
+
+  <section class="explain">
+    <div class="title">
+      <h2>積雪</h2>
+      amedas-snow-depth-recent.json
+    </div>
+
+    <div class="detail">
+      1時間ごとに更新（毎時00分の観測データを50分過ぎに更新）
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left">気象庁CSVにおける項目名</th>
+            <th style="text-align:left">JJWDのJSONにおけるプロパティ名</th>
+            <th style="text-align:left">概要</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align:left">観測所番号</td>
+            <td style="text-align:left">stn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">都道府県</td>
+            <td style="text-align:left">pref</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">国際地点番号</td>
+            <td style="text-align:left">intlStn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">地点</td>
+            <td style="text-align:left">point</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(年)</td>
+            <td style="text-align:left">year</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(月)</td>
+            <td style="text-align:left">month</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(日)</td>
+            <td style="text-align:left">day</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(時)</td>
+            <td style="text-align:left">hour</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(分)</td>
+            <td style="text-align:left">min</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在の積雪の深さ(cm)</td>
+            <td style="text-align:left">snowDepth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在の積雪の深さの品質情報</td>
+            <td style="text-align:left">snowDepthQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在の積雪の深さの平年比（%）</td>
+            <td style="text-align:left">snowDepthRatio</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">日平年値</td>
+            <td style="text-align:left">snowDepthAvg</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">日平年値の品質情報</td>
+            <td style="text-align:left">snowDepthAvgQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">日平年値の現象なし情報</td>
+            <td style="text-align:left">snowDepthAvgExist</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">極値更新</td>
+            <td style="text-align:left">snowDepthExt</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">10年未満での極値更新</td>
+            <td style="text-align:left">snowDepthExtU10</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨冬までの観測史上1位の値（cm）</td>
+            <td style="text-align:left">snowDepthR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨冬までの観測史上1位の値の品質情報</td>
+            <td style="text-align:left">snowDepthRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨冬までの観測史上1位の値観測時の年</td>
+            <td style="text-align:left">snowDepthRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨冬までの観測史上1位の値観測時の月</td>
+            <td style="text-align:left">snowDepthRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨冬までの観測史上1位の値観測時の日</td>
+            <td style="text-align:left">snowDepthRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値（cm）</td>
+            <td style="text-align:left">snowDepthMR</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値の品質情報</td>
+            <td style="text-align:left">snowDepthMRQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値観測時の年</td>
+            <td style="text-align:left">snowDepthMRyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値観測時の月</td>
+            <td style="text-align:left">snowDepthMRmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">昨日までのn月の1位の値観測時の日</td>
+            <td style="text-align:left">snowDepthMRday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">統計開始年</td>
+            <td style="text-align:left">startYear</td>
+            <td style="text-align:left"></td>
+          </tr>
+        </tbody>
+      </table>
+
+
+
+
+    </div>
+  </section>
+
+  <section class="explain">
+    <div class="title">
+      <h2>24時間降雪量</h2>
+      amedas-snow-depth-recent.json
+    </div>
+    <div class="detail">
+      1時間ごとに更新（毎時00分の観測データを50分過ぎに更新）
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left">気象庁CSVにおける項目名</th>
+            <th style="text-align:left">JJWDのJSONにおけるプロパティ名</th>
+            <th style="text-align:left">概要</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align:left">観測所番号</td>
+            <td style="text-align:left">stn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">都道府県</td>
+            <td style="text-align:left">pref</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">国際地点番号</td>
+            <td style="text-align:left">intlStn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">地点</td>
+            <td style="text-align:left">point</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(年)</td>
+            <td style="text-align:left">year</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(月)</td>
+            <td style="text-align:left">month</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(日)</td>
+            <td style="text-align:left">day</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(時)</td>
+            <td style="text-align:left">hour</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(分)</td>
+            <td style="text-align:left">min</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">24時間降雪量（cm）</td>
+            <td style="text-align:left">fallingSnow24h</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">24時間降雪量の品質情報</td>
+            <td style="text-align:left">fallingSnow24hQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </section>
+
+  <section class="explain">
+    <div class="title">
+      <h2>累積降雪量</h2>
+      amedas-falling-snow-total-recent.json
+    </div>
+    <div class="detail">
+      1日ごとに更新（毎朝4:00JST）
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left">気象庁CSVにおける項目名</th>
+            <th style="text-align:left">JJWDのJSONにおけるプロパティ名</th>
+            <th style="text-align:left">概要</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align:left">観測所番号</td>
+            <td style="text-align:left">stn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">都道府県</td>
+            <td style="text-align:left">pref</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">国際地点番号</td>
+            <td style="text-align:left">intlStn</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">地点</td>
+            <td style="text-align:left">point</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(年)</td>
+            <td style="text-align:left">year</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(月)</td>
+            <td style="text-align:left">month</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(日)</td>
+            <td style="text-align:left">day</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(時)</td>
+            <td style="text-align:left">hour</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">現在時刻(分)</td>
+            <td style="text-align:left">min</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">累積降雪量（cm）</td>
+            <td style="text-align:left">fallingSnow24h</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">累積降雪量の品質情報</td>
+            <td style="text-align:left">fallingSnow24hQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">起算年</td>
+            <td style="text-align:left">fallingSnowStartyear</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">起算月</td>
+            <td style="text-align:left">fallingSnowStartmonth</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">起算日</td>
+            <td style="text-align:left">fallingSnowStartday</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">平年比（%）</td>
+            <td style="text-align:left">fallingSnowRatio</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">平年値（cm）</td>
+            <td style="text-align:left">fallingSnowAvg</td>
+            <td style="text-align:left"></td>
+          </tr>
+          <tr>
+            <td style="text-align:left">平年値の品質情報</td>
+            <td style="text-align:left">fallingSnowQ</td>
+            <td style="text-align:left"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</body>
+
+</html>

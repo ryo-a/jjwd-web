@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111002924-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-111002924-1');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="./js/jquery.bgswitcher.js"></script>
+  <title>JJWD - JSONized Japanese Weather Data</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="JJWD - JSONized Japanese Weather Data">
+  <meta name="twitter:description" content="JSON形式で使いやすい気象データを配信するプロジェクト">
+</head>
+<script>
+  $(function () {
+    $('.logo-mark , .logo-type').hide().fadeIn(700);
+    $(".key-visual").bgswitcher({
+      images: ["./img/bg-clearsky.jpg", "./img/bg-cloudy.jpg", "./img/bg-rain.jpg", "./img/bg-sunset.jpg"]
+    });
+  });
+</script>
+
+<body>
+  <div class="credit">Photo by
+    <a href="https://twitter.com/pics_lapin" target="_blank">Lapin</a>
+  </div>
+  <section class="key-visual">
+
+    <div class="logo-mark"></div>
+    <div class="logo-type"></div>
+
+  </section>
+
+
+  <section class="explain">
+    <div class="title">
+      <h2>JJWD とは</h2>
+      What is JJWD?
+    </div>
+    <div class="detail">
+      JJWD - JSONized Japanese Weather Data は、気象庁が公開している各種データをJSON化し、誰もが容易に利用可能な形式で配信するプロジェクトです。
+      <br> 現時点ではCSV形式にて公開されているアメダスデータを試験的に配信しています。
+    </div>
+  </section>
+
+  <section class="explain">
+    <div class="title">
+      <h2>使い方</h2>
+      How to use
+    </div>
+    <div class="detail">
+      定時に配信されるJSONデータに、お使いの環境から cron などを用いてアクセスするだけでご利用いただけます。利用登録などは不要です。
+    </div>
+  </section>
+
+  <section class="explain">
+    <div class="title">
+      <h2>ドキュメント</h2>
+      Documents
+    </div>
+    <div class="detail">
+      利用可能なデータに関する詳細は <a href="/docs.html">ドキュメントページ</a> に掲載しております。
+    </div>
+  </section>
+
+  <section class="explain">
+      <div class="title">
+        <h2>免責事項</h2>
+        Disclaimer
+      </div>
+      <div class="detail">
+        このサービスはホビーユースやプロトタイピングでの使用を想定しており、企業や官公庁の本番環境における利用は想定しておりません。<br>
+        このサービスにおいて、運営者は出来る限り正確な情報を配信するように注意を払っておりますが、情報の正確性については一切保証しませんので、データの正確性が極めて重要になる用途での利用はご遠慮ください。<br>
+        また、このサービスから配信された情報を利用した際などに生じたあらゆる損害等について、理由の如何に関わらず、運営者は一切責任を負いません。
+      </div>
+    </section>
+
+  <section class="explain">
+    <div class="title">
+      <h2>お問い合わせ</h2>
+      Contact
+    </div>
+    <div class="detail mobile-center">
+      Twitter: <a href="https://twitter.com/jjwd_info" target="_blank">@jjwd_info</a><br>
+      Developed by ryo-a (<a href="https://twitter.com/geo_vitya" target="_blank">@geo_vitya</a>)
+    </div>
+  </section>
+
+</body>
+
+</html>
